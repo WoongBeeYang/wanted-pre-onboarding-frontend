@@ -1,25 +1,26 @@
-import axios from 'axios';
+
 import React, { useState } from 'react';
 
-const TodoList = () => {
+const TodoList = ({ data }) => {
   const [text, setText] = useState("");
-  const api = process.env.REACT_APP_API_URL
-  const createTodo = () => {
-    axios({
-      url:`${api}todos`,
-      method:"POST",
-      
-    })
-  }
+
 
 
   return (
-    <div>
-      <div>
-        <input type="text" onChange={(e) => setText(e.target.value)}/>
-        <button onClick={createTodo}>작성</button>
+    <>
+      <div className='border p-3'>
+        <div className='border p-3 my-1'>
+          <p>제목 : {data.todo}</p>
+        </div>
+        
+        <div className='flex'>
+          <div className='float-right'>
+            <button className='mx-2 p-2 border'>수정</button>
+            <button className='mx-2 p-2 border'>삭제</button>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
