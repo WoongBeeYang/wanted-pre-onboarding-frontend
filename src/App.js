@@ -1,9 +1,10 @@
-import Routes from './Routes';
 
-const App = () => {
+import MainRoute from './MainRoute';
+
+function App() {
   return (
     <>
-      <Routes/>
+      <MainRoute/>
     </>
   );
 };

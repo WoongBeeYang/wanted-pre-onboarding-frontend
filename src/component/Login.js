@@ -1,21 +1,20 @@
+import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import Routes from "./Routes";
+import { useNavigate } from "react-router-dom";
 
-
-
-function Main() {
+const Login = () => {
   const api = process.env.REACT_APP_API_URL
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [emailDiv, setEmailDiv] = useState("")
   const [pwdDiv, setPwdDiv] = useState("");
   const [loginBtn, setLoginBtn] = useState(false);
+  const access_token = localStorage.getItem("access_token")
   const navigate = useNavigate();
 
   const checkEmail = (e) => {
-  setEmail(e.target.value)
+    setEmail(e.target.value)
     if (!email.includes("@")) {
       setEmailDiv("@를 포함해야합니다.")
     } else {
@@ -30,6 +29,10 @@ function Main() {
     } else {
       setPwdDiv("")
     }
+  }
+
+  if(access_token !== undefined || access_token !== null) {
+    navigate("/todo");
   }
 
   useEffect(() => {
@@ -72,7 +75,7 @@ function Main() {
       }
     }).then((res) => {
       const access_token = res.data.access_token;
-      localStorage.setItem("access_token",access_token)
+      localStorage.setItem("access_token", access_token)
       alert("로그인 되었습니다.");
       navigate("/todo")
     }).catch(error => {
@@ -80,10 +83,8 @@ function Main() {
       throw new Error(error);
     })
   }
-
   return (
     <>
-    <Routes/>
       <div className="border w-[500px] h-[500px] mx-auto text-center mt-10">
         <div className='mt-3'>
           <p className='text-3xl font-bold'> 로그인하기 </p>
@@ -122,6 +123,6 @@ function Main() {
       </div>
     </>
   );
-}
+};
 
-export default Main;
+export default Login;
