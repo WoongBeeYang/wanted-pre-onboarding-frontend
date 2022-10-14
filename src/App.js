@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 
@@ -10,10 +11,11 @@ function App() {
   const [emailDiv, setEmailDiv] = useState("")
   const [pwdDiv, setPwdDiv] = useState("");
   const [loginBtn, setLoginBtn] = useState(false);
+  const navigate = useNavigate();
 
   const checkEmail = (e) => {
-    setEmail(e.target.value)
-    if (!email.includes("@") ) {
+  setEmail(e.target.value)
+    if (!email.includes("@")) {
       setEmailDiv("@를 포함해야합니다.")
     } else {
       setEmailDiv("")
@@ -37,14 +39,10 @@ function App() {
     }
   }, [email, password])
 
-  const checkLogin = () => {
-    console.log("버튼눌림");
-  }
-
   const checkSignUp = () => {
     axios({
       method: "POST",
-      url: `https://pre-onboarding-selection-task.shop/auth/signup`,
+      url: `${api}auth/signup`,
       headers: {
         "Content-Type": "application/json"
       },
@@ -53,7 +51,6 @@ function App() {
         password: password
       }
     }).then((res) => {
-      console.log(res);
       alert("회원가입 되었습니다.");
     }).catch(error => {
       console.log(error);
@@ -61,9 +58,27 @@ function App() {
     })
   }
 
-
-
-
+  const checkSignIn = () => {
+    axios({
+      method: 'POST',
+      url: `${api}auth/signin`,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: {
+        email: email,
+        password: password
+      }
+    }).then((res) => {
+      const access_token = res.data.access_token;
+      localStorage.setItem("access_token",access_token)
+      alert("로그인 되었습니다.");
+      navigate("/todo")
+    }).catch(error => {
+      console.log(error);
+      throw new Error(error);
+    })
+  }
 
   return (
     <div>
@@ -99,7 +114,7 @@ function App() {
 
           <div className='flex mx-auto gap-5 mt-1'>
             <button className='border p-3' onClick={checkSignUp} id="signInBtn">회원가입</button>
-            <button className='border p-3 disabled:bg-gray-400' id="signUpBtn" disabled={loginBtn === true ? false : true} onClick={checkLogin}>로그인</button>
+            <button className='border p-3 disabled:bg-gray-400' id="signUpBtn" disabled={loginBtn === true ? false : true} onClick={checkSignIn}>로그인</button>
           </div>
         </div>
       </div>
