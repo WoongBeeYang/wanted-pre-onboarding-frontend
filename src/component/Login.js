@@ -31,9 +31,11 @@ const Login = () => {
     }
   }
 
-  if(access_token !== undefined || access_token !== null) {
-    navigate("/todo");
-  }
+  useEffect(() => {
+    if (access_token !== null) {
+      navigate("/todo");
+    }
+  }, [])
 
   useEffect(() => {
     if (password.length > 7 && email.includes('@')) {
