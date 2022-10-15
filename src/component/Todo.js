@@ -4,13 +4,12 @@ import axios from 'axios';
 import TodoList from './todoList/TodoList'
 
 const Todo = () => {
-  const access_token = localStorage.getItem("access_token");
-  console.log(access_token)
+  const access_token = localStorage.getItem("access_token"); 
   const [todo, setTodo] = useState("");
   const navigate = useNavigate();
   const [todoList, setTodoList] = useState("");
   const api = process.env.REACT_APP_API_URL
-  console.log(todoList)
+  
 
   useEffect(() => {
     if (access_token === null) {
@@ -45,7 +44,8 @@ const Todo = () => {
         "todo": todo
       }
     }).then((res) => {
-      console.log(res);
+      alert("작성되었습니다.")
+      window.location.reload();
     }).catch(error => {
       console.log(error);
       throw new Error(error);
@@ -66,11 +66,11 @@ const Todo = () => {
 
           <div className="flex justify-center">
             <div className="p-3">
-              <textarea className="border w-[500px] h-[100px]" type="textarea" onChange={(e) => setTodo(e.target.value)} />
+              <input className="border p-3 w-[500px]" type="text" onChange={(e) => setTodo(e.target.value)} />
             </div>
 
             <div className="my-auto">
-              <button className="w-20 h-20 bg-blue-400" onClick={createTodo}>작성</button>
+              <button className="w-20 p-3 bg-gray-400" onClick={createTodo}>작성</button>
             </div>
           </div>
         </div>
